@@ -143,9 +143,10 @@ export default function PatientDashboard() {
 					<h4> {currentUser.firstName} {currentUser.lastName} </h4>
 					<br/>
 					<div class={styles.horizontalLine}></div>
-					At Green Hills, we believe that every patient deserves the highest quality care possible. 
-					<br/>
-					Our commitment to excellence in healthcare is matched only by our compassion for those we serve.
+					At MEDISYNC, we combine compassionate healthcare with intelligent hospital management solutions.
+                    <br/>
+                    Our secure and scalable platform empowers hospitals to deliver exceptional care with efficiency and trust.
+
 
 				</div>
 

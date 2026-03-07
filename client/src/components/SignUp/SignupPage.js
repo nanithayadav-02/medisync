@@ -43,7 +43,8 @@ function SignupPage() {
       confirmPassword: form.confirmPassword.value,
       userType: form.userType.value
     }
-    fetch('http://localhost:3001/signUp', {
+    fetch("/api/users/signup", {
+
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
