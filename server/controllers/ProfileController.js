@@ -90,14 +90,13 @@ const isDoctorValid = (newdoctor) => {
     if (!newdoctor.email) {
         errorList[errorList.length] = "Please enter email";
     }
-    if (!newdoctor.password) {
-        errorList[errorList.length] = "Please enter password";
-    }
-    if (!newdoctor.confirmPassword) {
-        errorList[errorList.length] = "Please re-enter password in Confirm Password field";
-    }
-    if (!(newdoctor.password == newdoctor.confirmPassword)) {
-        errorList[errorList.length] = "Password and Confirm Password did not match";
+    if (newdoctor.password) {
+        if (!newdoctor.confirmPassword) {
+            errorList[errorList.length] = "Please re-enter password in Confirm Password field";
+        }
+        if (!(newdoctor.password == newdoctor.confirmPassword)) {
+            errorList[errorList.length] = "Password and Confirm Password did not match";
+        }
     }
 
     if (errorList.length > 0) {
@@ -128,9 +127,19 @@ const updateDoctor = async (req, res) => {
     else {
         try {
 
-            const updateddoctor = await Doctor.updateOne({ _id: req.params.id }, { $set: { "phone": req.body.phone, "department": req.body.department } });
+            const updateDoctorData = { "phone": req.body.phone };
+            if (req.body.department) {
+                updateDoctorData.department = req.body.department;
+            }
 
-            const updateduser = await User.updateOne({ _id: req.body.userId }, { $set: { "firstName": req.body.firstName, "lastName": req.body.lastName,"email":req.body.email, "username": req.body.username, "password": req.body.password } });
+            const updateddoctor = await Doctor.updateOne({ _id: req.params.id }, { $set: updateDoctorData });
+
+            const updateUserData = { "firstName": req.body.firstName, "lastName": req.body.lastName,"email":req.body.email, "username": req.body.username };
+            if (req.body.password) {
+                updateUserData.password = req.body.password;
+            }
+
+            const updateduser = await User.updateOne({ _id: req.body.userId }, { $set: updateUserData });
 
             res.status(201).json({ message: 'success' });
         } catch (error) {

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const bcrypt = require("bcrypt");
+const bcryptjs = require("bcryptjs");
 
 const PatientSchema = new Schema({
   userId: {
@@ -26,7 +26,7 @@ const PatientSchema = new Schema({
 PatientSchema.pre('save', function (next) {
   const patient = this
 
-  bcrypt.hash(patient.password, 10, (error, hash) => {
+  bcryptjs.hash(patient.password, 10, (error, hash) => {
     patient.password = hash
     next()
   })

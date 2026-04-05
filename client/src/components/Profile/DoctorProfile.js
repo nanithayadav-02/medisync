@@ -48,8 +48,6 @@ function DoctorProfile() {
         setLastName(response.data.userId.lastName);
         setEmail(response.data.userId.email);
         setUsername(response.data.userId.username);
-        setPassword(response.data.userId.password);
-        setConfirmPassword(response.data.userId.password);
         setPhone(response.data.phone);
         setDepartment(response.data.department);
         setUserId(response.data.userId._id);
@@ -62,17 +60,22 @@ function DoctorProfile() {
 
         try {
 
-            await axios.patch(`http://localhost:5000/profile/doctor/${doctorId}`, {
+            const updateData = {
                 firstName,
                 lastName,
                 username,
                 email,
                 phone,
-                password,
-                confirmPassword,
                 department,
                 userId
-            });
+            };
+
+            if (password) {
+                updateData.password = password;
+                updateData.confirmPassword = confirmPassword;
+            }
+
+            await axios.patch(`http://localhost:5000/profile/doctor/${doctorId}`, updateData);
 
             navigate("/profile");
 
@@ -89,7 +92,7 @@ function DoctorProfile() {
     // Password validation
     useEffect(() => {
 
-        if ((typeof password !== 'undefined') && password.length > 0 && password?.trim()?.length <= 6) {
+        if (password && password?.trim()?.length > 0 && password?.trim()?.length <= 6) {
 
             setPasswordValidationMessage('Password Length must be greater than 6 characters');
 
@@ -226,7 +229,6 @@ function DoctorProfile() {
                                                 <input
                                                     className="form-control"
                                                     type="password"
-                                                    required
                                                     value={password}
                                                     onChange={(e) => setPassword(e.target.value)}
                                                 />
@@ -244,7 +246,6 @@ function DoctorProfile() {
                                                 <input
                                                     className="form-control"
                                                     type="password"
-                                                    required
                                                     value={confirmPassword}
                                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                                 />

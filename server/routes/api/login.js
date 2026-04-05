@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../../models/user");
-const bcrypt = require("bcrypt");
+const bcryptjs = require("bcryptjs");
 require("dotenv").config();
 
 
@@ -44,7 +44,7 @@ const loginUser = (req, res) => {
             } else if (!user) {
                 res.status(401).json({ message: "error", errors: ["User not found"] });
             } else {
-                bcrypt.compare(password, user.password, (error2, result) => {
+                bcryptjs.compare(password, user.password, (error2, result) => {
                     if (error2) {
                         res.status(401).json({ message: "error", errors: [error2.message] });
                     } else if (!result) {

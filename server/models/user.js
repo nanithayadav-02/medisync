@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema;
 
-const bcrypt = require('bcrypt')
+const bcryptjs = require('bcryptjs')
 
 var uniqueValidator = require('mongoose-unique-validator')
 
@@ -53,7 +53,7 @@ UserSchema.plugin(uniqueValidator, { message: '{PATH} must be unique' })
 UserSchema.pre('save', function (next) {
     const user = this
 
-    bcrypt.hash(user.password, 10, (error, hash) => {
+    bcryptjs.hash(user.password, 10, (error, hash) => {
         user.password = hash
         next()
     })
@@ -65,7 +65,7 @@ UserSchema.pre('updateOne', function (next) {
     if (!password) {
       return next();
     }
-    bcrypt.hash(password, 10, (err, hash) => {
+    bcryptjs.hash(password, 10, (err, hash) => {
       if (err) {
         return next(err);
       }
